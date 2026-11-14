@@ -1,0 +1,237 @@
+/* Forge Neo Settings++ v0.2.6; Extra Networks only. */
+html body .extra-network-pane .card .card-button {
+    font-size: var(--forge-neo-settings-plus-icon-size, 16px) !important;
+    width: 1.3em !important;
+    padding: 0.1em !important;
+}
+
+/* Small view switch alongside native search / sort / refresh; scoped to our controls. */
+.extra-network-control .fns-view-switch {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    gap: 2px;
+    margin: 0 0.3rem;
+    flex-shrink: 0;
+    border-radius: 5px;
+}
+.extra-network-control .fns-view-switch button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.7rem;
+    height: 1.85rem;
+    padding: 0 0.25rem;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--body-text-color, inherit);
+    border: 1px solid var(--border-color-primary, #7778);
+    background: var(--background-fill-secondary, transparent);
+    border-radius: 4px;
+    cursor: pointer;
+}
+.extra-network-control .fns-view-switch button.fns-selected {
+    background: var(--button-primary-background-fill, #5865f2);
+    color: var(--button-primary-text-color, white);
+    border-color: var(--button-primary-border-color, transparent);
+}
+.extra-network-control .fns-view-switch button:hover { filter: brightness(1.13); }
+.extra-network-control .fns-view-switch button:focus-visible { outline: 2px solid var(--color-accent, #4789ff); }
+
+/* Keep native card sizing unless user explicitly chose a Settings++ override. */
+.extra-network-pane .extra-network-cards > .card {
+    margin: calc(var(--fns-card-gap, 8px) / 2) !important;
+}
+/* Cards per Row controls the maximum COUNT per row, NOT the card size.
+   Cards use the same native width/height that Forge places inline on them.
+   On a narrow viewport we shrink both dimensions proportionately to fit.
+   Grid rows are explicit (not auto/ratio-derived) to prevent preview overlap. */
+.extra-network-pane.fns-fixed-columns.fns-view-cards .extra-network-cards {
+    display: grid !important;
+    grid-template-columns: repeat(var(--fns-columns, 2), minmax(0, var(--fns-fixed-card-width, 16rem))) !important;
+    grid-auto-rows: var(--fns-fixed-card-height, 24rem) !important;
+    align-items: start !important;
+    align-content: start !important;
+    justify-content: start !important;
+    gap: var(--fns-card-gap, 8px) !important;
+}
+.extra-network-pane.fns-fixed-columns.fns-view-cards .extra-network-cards > .card {
+    position: relative !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: var(--fns-fixed-card-width, 16rem) !important;
+    max-width: 100% !important;
+    height: var(--fns-fixed-card-height, 24rem) !important;
+    aspect-ratio: auto !important;
+    align-self: start !important;
+    box-sizing: border-box !important;
+}
+.extra-network-pane.fns-fixed-columns.fns-view-cards .extra-network-cards > .card .preview {
+    position: absolute !important;
+    inset: 0 auto auto 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+/* No Preview is intentionally a *compact* layout, regardless of the selected
+   column count. Do not stretch text-only cards to huge widths. */
+.extra-network-pane.fns-fixed-columns.fns-view-hidden .extra-network-cards {
+    display: grid !important;
+    grid-template-columns: repeat(var(--fns-columns, 2), minmax(0, 12rem));
+    align-content: start;
+    gap: var(--fns-card-gap, 8px);
+}
+.extra-network-pane.fns-view-cards.fns-ratio-square .extra-network-cards > .card { aspect-ratio: 1 / 1; height: auto !important; }
+.extra-network-pane.fns-view-cards.fns-ratio-portrait .extra-network-cards > .card { aspect-ratio: 3 / 4; height: auto !important; }
+.extra-network-pane.fns-view-cards.fns-ratio-landscape .extra-network-cards > .card { aspect-ratio: 16 / 9; height: auto !important; }
+.extra-network-pane.fns-view-cards.fns-fit-contain .extra-network-cards .card .preview {
+    object-fit: contain !important;
+}
+.extra-network-pane.fns-view-cards.fns-hoverzoom .extra-network-cards .card .preview { transition: transform .15s ease; }
+.extra-network-pane.fns-view-cards.fns-hoverzoom .extra-network-cards .card:hover .preview { transform: scale(1.06); }
+
+/* Explicit dimensions win over the aspect-ratio-only variants below.
+   Calculate both width and height in JS, avoiding collapsed grid tracks. */
+.extra-network-pane.fns-fixed-columns.fns-view-cards .extra-network-cards > .card {
+    width: var(--fns-fixed-card-width, 16rem) !important;
+    height: var(--fns-fixed-card-height, 24rem) !important;
+    aspect-ratio: auto !important;
+}
+
+/* Configurable name lines; leave other native Forge card UI functional. */
+.extra-network-pane:not(.fns-lines-full) .extra-network-cards .card .actions .name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--fns-lines, 2);
+    overflow: hidden;
+}
+.extra-network-pane.fns-lines-full .extra-network-cards .card .actions .name {
+    display: block;
+    overflow-wrap: anywhere;
+}
+.extra-network-pane.fns-view-cards.fns-label-hover .extra-network-cards .card .actions { opacity: 0; transition: opacity 0.15s ease; }
+.extra-network-pane.fns-view-cards.fns-label-hover .extra-network-cards .card:hover .actions,
+.extra-network-pane.fns-view-cards.fns-label-hover .extra-network-cards .card:focus-within .actions { opacity: 1; }
+
+/* Under-image names: preview occupies all space except a separate solid footer. */
+.extra-network-pane.fns-view-cards.fns-label-below .extra-network-cards .card .preview {
+    height: calc(100% - 3.65rem) !important;
+    top: 0;
+}
+.extra-network-pane.fns-view-cards.fns-label-below .extra-network-cards .card .actions {
+    background: var(--background-fill-secondary, #242424) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    min-height: 3.65rem;
+    max-height: 3.65rem;
+    overflow: hidden;
+}
+.extra-network-pane.fns-view-cards.fns-label-below .extra-network-cards .card .actions * {
+    color: var(--body-text-color, #fff) !important;
+}
+
+/* No Preview: compact plain cards, including video and all image types. */
+.extra-network-pane.fns-view-hidden .extra-network-cards > .card,
+.extra-network-pane.fns-view-list .extra-network-cards > .card {
+    background: var(--background-fill-secondary, #222) !important;
+    background-image: none !important;
+    aspect-ratio: auto !important;
+    box-shadow: 0 0 0 1px var(--border-color-primary, #8886);
+    color: var(--body-text-color, inherit) !important;
+}
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .preview,
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card img,
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card video {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .actions {
+    position: relative !important;
+    inset: auto !important;
+    min-width: 0;
+    padding: 0.48rem 0.6rem !important;
+    padding-right: 3rem !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+}
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .actions *,
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .button-row .card-button {
+    color: var(--body-text-color, #fff) !important;
+    text-shadow: none !important;
+}
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .actions .name {
+    font-size: 1rem !important;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .actions .description,
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .actions .additional {
+    display: none !important;
+}
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card .button-row {
+    top: 0.1rem;
+    right: 0.1rem;
+    z-index: 2;
+    display: flex !important;
+    align-items: center;
+    background: transparent !important;
+    color: var(--body-text-color, #fff) !important;
+    visibility: visible !important;
+}
+.extra-network-pane.fns-view-hidden .extra-network-cards > .card {
+    display: inline-flex !important;
+    align-items: center;
+    width: 12rem !important;
+    max-width: calc(100% - var(--fns-card-gap, 8px)) !important;
+    height: 5.25rem !important;
+}
+.extra-network-pane.fns-view-hidden.fns-fixed-columns .extra-network-cards > .card {
+    display: flex !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* List mode keeps the native .card click/metadata buttons but makes each a row. */
+.extra-network-pane.fns-view-list .extra-network-cards {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+.extra-network-pane.fns-view-list .extra-network-cards > .card {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center;
+    width: calc(100% - var(--fns-card-gap, 8px)) !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 2.55rem !important;
+    margin: calc(var(--fns-card-gap, 8px) / 2) !important;
+    overflow: hidden;
+}
+.extra-network-pane.fns-view-list .extra-network-cards .card .actions {
+    width: 100%;
+    padding-right: 6.1rem !important;
+}
+.extra-network-pane.fns-view-list .extra-network-cards .card .button-row { top: 50%; transform: translateY(-50%); }
+
+/* No Preview and List still work with keyboard focus; don't reveal video on hover. */
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card:focus-within,
+.extra-network-pane:is(.fns-view-hidden, .fns-view-list) .extra-network-cards .card:hover {
+    outline: 1px solid var(--border-color-primary, #aaa);
+}
+
+/* v0.2.1: Respect Forge native Extra Networks search/filter.
+   Forge adds the .hidden class to filtered cards. Our view layouts use
+   display: ... !important, which would otherwise override its hiding rule.
+   Covers Cards (including fixed columns), No Preview and List modes. */
+html body .extra-network-pane .extra-network-cards > .card.hidden,
+html body .extra-network-pane.fns-fixed-columns .extra-network-cards > .card.hidden {
+    display: none !important;
+}
