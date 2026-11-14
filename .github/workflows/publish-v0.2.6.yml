@@ -1,0 +1,44 @@
+name: Publish v0.2.6 release (one-time)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-v0.2.6.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.event.head_commit.message == 'build: publish v0.2.6 release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Package Forge Neo extension
+        run: |
+          mkdir -p dist/forge-neo-settings-plus
+          cp -a README.md CHANGELOG.md LICENSE style.css javascript scripts dist/forge-neo-settings-plus/
+          cd dist
+          zip -qr ../forge-neo-settings-plus-v0.2.6.zip forge-neo-settings-plus
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > /tmp/release-notes.md <<'EOF'
+          First public release of Forge Neo Settings++ for Forge Neo (`neo` branch).
+
+          Features:
+          - Extra Networks modes: Cards, No Preview and List, with per-category selection.
+          - Card labels, spacing, aspect ratio, preview fitting, and hover zoom.
+          - Cards per Row (2–6) with native Forge card dimensions retained.
+          - Card Icon Size (10–32 px) and Maximum Resolution (default, 2048, 4096, 8192 px).
+          - Search, sorting and native card actions remain available in all modes.
+
+          Tested on Forge Neo on Windows. No extra Python dependencies.
+          Note: No Preview and List visually hide media; files may still be requested by the browser.
+
+          Install: extract the attached ZIP's `forge-neo-settings-plus` folder into Forge Neo's `extensions` directory.
+          EOF
+          gh release create v0.2.6 forge-neo-settings-plus-v0.2.6.zip --target "$GITHUB_SHA" --title 'v0.2.6 — First public release' --notes-file /tmp/release-notes.md
